@@ -1,8 +1,0 @@
-[2020-03-15 15:43:04.376] [sharedprocess] [info] main {"machineId":"2dda3acfc4753495445f97eadc285e3851317f6177e4a06d21a05b4528d81ab0","windowId":2}
-[2020-03-15 15:43:44.460] [sharedprocess] [info] Starting to clean up unused language packs.
-[2020-03-15 15:48:06.401] [sharedprocess] [info] Installing extension: angular.ng-template
-[2020-03-15 15:48:09.754] [sharedprocess] [info] Downloaded extension: angular.ng-template /tmp/330d011a-e7f7-46d0-9c1c-1d4bca4bec3c
-[2020-03-15 15:48:12.170] [sharedprocess] [info] Extracted extension to /home/emanuel/.vscode/extensions/.angular.ng-template-0.900.17: angular.ng-template
-[2020-03-15 15:48:12.171] [sharedprocess] [info] Renamed to /home/emanuel/.vscode/extensions/angular.ng-template-0.900.17
-[2020-03-15 15:48:12.178] [sharedprocess] [info] Installation completed. angular.ng-template
-[2020-03-15 15:48:12.277] [sharedprocess] [info] Extensions installed successfully: angular.ng-template

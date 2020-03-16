@@ -1,1 +1,0 @@
-[2020-03-15 17:27:32.654] [renderer1] [warning] UNRESPONSIVE extension host, 'Angular.ng-template' took 100% of 5619.426ms, saved PROFILE here: '/tmp/exthost-4f96b0.cpuprofile' [{"id":"Angular.ng-template","total":5613151,"percentage":100},{"id":"gc","total":5575,"percentage":0}]

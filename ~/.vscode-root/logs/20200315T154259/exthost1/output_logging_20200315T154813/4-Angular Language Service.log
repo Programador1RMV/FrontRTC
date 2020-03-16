@@ -1,6 +1,0 @@
-[Info  - 3:48:13 p. m.] Angular language server process ID: 5252
-[Info  - 3:48:13 p. m.] Using typescript v3.7.4 from /home/emanuel/.vscode/extensions/angular.ng-template-0.900.17/node_modules/typescript/lib/tsserverlibrary.js
-[Info  - 3:48:13 p. m.] Using @angular/language-service v9.0.6 from /home/emanuel/.vscode/extensions/angular.ng-template-0.900.17/server/node_modules/@angular/language-service/bundles/language-service.umd.js
-[Info  - 3:48:13 p. m.] Log file: /var/www/angular/tests/VideoChat/~/.vscode-root/logs/20200315T154259/exthost1/Angular.ng-template/nglangsvc.log
-[Error - 3:48:25 p. m.] No config file for /var/www/angular/tests/VideoChat/src/index.html
-[Error - 4:43:40 p. m.] No config file for /usr/share/code/resources/app/extensions/node_modules/typescript/lib/lib.dom.d.ts
