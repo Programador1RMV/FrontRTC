@@ -1,0 +1,11 @@
+<div class="container">
+    <div class="video">
+        <video #me class="me" [ngClass]="{left:inCall}"></video>
+        <video #video class="input" [ngClass]="{hidden:!inCall}"></video>
+    </div>
+
+    <button class="danger" (click)="colgar()"><i class="fa fa-phone"></i></button>
+    <button (click)="connect()" [ngClass]="{green:peer.id}"><i class="fa fa-phone"></i></button>
+
+    <a class="botonCerrarSesion">&times;</a>
+</div>
