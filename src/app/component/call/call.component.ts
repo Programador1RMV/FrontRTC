@@ -82,13 +82,13 @@ export class CallComponent implements OnInit {
             this.video.nativeElement.play();
           });
       })
-      
     });
     
   }
   
   ngOnInit(): void {
     this._router.params.subscribe(params=>{
+      console.log(params)
       if(params.medicId){
         this.key = params.medicId;
         this.connect();

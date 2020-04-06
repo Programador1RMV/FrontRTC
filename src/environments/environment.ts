@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   apiUri:`https://localhost:3000`,
   peerConf:{
-    ip:'186.0.101.45',
+    ip:'localhost',
     path:'/',
     secure:true
   }

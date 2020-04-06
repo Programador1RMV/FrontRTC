@@ -1,0 +1,14 @@
+<div class="jumbotron jumbotron-fluid">
+  <form class="container" [formGroup]="form" (ngSubmit)="onSubmit($event)">
+      <h1 class="display-4">Ingrese su número de docummento</h1>
+      <p class="lead"><input formControlName="documento" type="text" class="form-control"></p>
+      <p class="lead">
+          <span class="my-auto"> 
+              Acepto terminos y condiciones <input formControlName="terms" type="checkbox" />
+          </span>
+      </p>
+      <p class="lead">
+          <button class="btn btn-primary float-left" type="submit">Buscar</button>
+      </p>
+  </form>
+</div>

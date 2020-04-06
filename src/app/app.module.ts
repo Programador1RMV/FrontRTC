@@ -13,6 +13,8 @@ import { MedicoComponent } from './component/medico/medico.component';
 import { ServiciosComponent } from './component/servicios/servicios.component';
 import { FormularioComponent } from './component/formulario/formulario.component';
 import { PacienteComponent } from './component/paciente/paciente.component'
+import { FormularioPacienteComponent } from './component/formulario-paciente/formulario-paciente.component';
+import { UtilsModule } from './utils/utils.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,7 +23,7 @@ import { PacienteComponent } from './component/paciente/paciente.component'
     ServiciosComponent,
     FormularioComponent,
     PacienteComponent,
-    
+    FormularioPacienteComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +32,8 @@ import { PacienteComponent } from './component/paciente/paciente.component'
     ReactiveFormsModule,
     HttpClientModule,
     NgbNavModule,
-    NgbTabsetModule
+    NgbTabsetModule,
+    UtilsModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]

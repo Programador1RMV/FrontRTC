@@ -2,16 +2,18 @@
     &.medico{
         .container{
             width: 30%;
+            grid-template-areas: "video  video  video  video"
+            "me     me     me     me"
+            "button button button button"
+            "buton  buton  buton  buton";   
         }
     }
+    
     .container{
         min-width: 100%;
         min-width: 35vw;
         display:grid;
-        grid-template-areas: "video  video  video  video"
-                             "me     me     me     me"
-                             "button button button button"
-                             "buton  buton  buton  buton";
+        grid-area: "video me";
         margin:auto;
         height:auto;
         min-height: 95vh;
@@ -52,6 +54,12 @@
         }
         .formulario{
             grid-area: form;
+        }
+    }
+
+    &:not(.medico){
+        button{
+            display: none !important;
         }
     }
 }
