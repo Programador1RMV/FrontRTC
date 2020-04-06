@@ -1,11 +1,6 @@
-<div class="container">
-    <div class="video">
-        <video #me class="me" [ngClass]="{left:inCall}"></video>
-        <video #video class="input" [ngClass]="{hidden:!inCall}"></video>
-    </div>
-
-    <button class="danger" (click)="colgar()"><i class="fa fa-phone"></i></button>
-    <button (click)="connect()" [ngClass]="{green:peer.id}"><i class="fa fa-phone"></i></button>
-
-    <a class="botonCerrarSesion">&times;</a>
+<div class="container float-left">
+    <video #me class="me responsive" [ngClass]="{left:inCall}"></video>
+    <video #video class="input" [ngClass]="{hidden:!inCall}"></video>
+    <button *ngIf="!inCall" (click)="connect()" [ngClass]="{green:peer.id}">Activar llamada <i class="fa fa-phone"></i></button>
+    <button  *ngIf="!inCall" [ngClass]="{'btn btn-info':peer.id}" class="boton">Generar enlace <i class="fas fa-link"></i></button>
 </div>

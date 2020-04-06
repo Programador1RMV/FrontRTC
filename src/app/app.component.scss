@@ -1,1 +1,10 @@
 @import '../styles.scss';
+
+:host{
+    body {
+        background-color: #252525 !important;
+    }
+}
+textarea{
+    resize: none !important;
+}

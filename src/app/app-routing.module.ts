@@ -2,14 +2,20 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { CallComponent } from './component/call/call.component';
 import { MedicoGuard } from './guards/medico.guard';
+import { MedicoComponent } from './component/medico/medico.component';
+import { CloseGuard } from './guards/close.guard';
+import { PacienteComponent } from './component/paciente/paciente.component';
 
 
 const routes: Routes = [
   {
-    path:'beneficiario/:medicId/:reqcsc',component:CallComponent,
+    path:'paciente',children:[
+      {path:'', component:PacienteComponent},
+      {path:':medicId',component:CallComponent}
+    ],
   },
   {
-    path:'medico',component:CallComponent,canActivate:[MedicoGuard]
+    path:'medico',component:MedicoComponent,canActivate:[MedicoGuard],canDeactivate:[CloseGuard]
   }
 ];
 

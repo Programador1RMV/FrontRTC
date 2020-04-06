@@ -1,5 +1,6 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import Swal from 'sweetalert2';
 declare var Peer:any
 @Component({
   selector: 'app-root',
@@ -7,5 +8,10 @@ declare var Peer:any
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  
+  @HostListener('window:beforeunload',['$event'])
+  async preventClose(){
+    let {value,dismiss} = await Swal.fire({
+
+    })
+  }
 }

@@ -1,0 +1,56 @@
+<div class="container float-left mt-5">
+    <span><strong>Signos Y sintomas: </strong> {{teleconsulta.signosSintomas}}</span><br>
+    <span><strong>Evaluación:</strong> {{teleconsulta.evaluacion}}</span>
+    <form class="row">
+      <div class="col-12 mt-3">
+        <div class="col-12">
+          <div class="form-group">
+            <ngb-tabset type="pills" [justify]="'justified'" [destroyOnHide]="false">
+              <ngb-tab title="Antecendentes">
+                <ng-template ngbTabContent>
+                  <textarea  autofocus="autofocus" class="form-control" cols="30" rows="4"></textarea>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab>
+                <ng-template ngbTabTitle>N.Consulta</ng-template>
+                <ng-template ngbTabContent>
+                  <textarea  autofocus="autofocus" class="form-control" cols="30" rows="4"></textarea>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab title="N.Operador">
+                <ng-template ngbTabContent>
+                  <textarea  autofocus="autofocus" class="form-control" cols="30" rows="4"></textarea>
+                </ng-template>
+              </ngb-tab>
+            </ngb-tabset>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 mt-4">
+        <div class="col-12">
+          <div class="form-group">
+            <label for="tratamiento"  class="h3">Tratamiento</label>
+            <textarea id="tratamiento" class="form-control" cols="30" rows="4"></textarea>
+          </div>
+        </div>
+        <div class="col-12">
+          <h5>Asignar despacho? <button class="btn btn-success">Si</button> </h5>
+          <h5>Requiere seguimiento? <button class="btn btn-success">Si</button> </h5> 
+        </div>
+        <div class="col-12">
+          <div class="form-group col-5 m0">
+            <label for="cie10">CIE10</label>
+            <select id="cie10" class="form-control">
+  
+            </select>
+
+            <div class="input-group">
+              <button class="btn btn-success float-left">finalizar teleconsulta</button>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </form>
+</div>

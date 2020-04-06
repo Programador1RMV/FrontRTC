@@ -1,0 +1,34 @@
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th scope="col">consecutivo</th>
+    <th scope="col" sortable="horaLllamada">horaLllamada</th>
+    <th scope="col" sortable="nombre">nombre</th>
+    <th scope="col" sortable="cedula">cedula</th>
+    <th scope="col" sortable="signosSintomas">signosSintomas</th>
+    <th scope="col" sortable="evaluacion">evaluacion</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let service of teleconsultas">
+    <td>{{service.consecutivo}}</td>
+    <td>{{service.horaLlamada}}</td>
+    <td>{{service.nombre}}</td>
+    <td>{{service.cedula}}</td>
+    <td>{{service.signosSintomas}}</td>
+    <td>{{service.evaluacion}}</td>
+    <td>
+      <button class="btn" 
+              [ngClass]="{'btn-info':teleconsulta.consecutivo == service.consecutivo,
+                          'btn-primary':teleconsulta.consecutivo != service.consecutivo}" 
+              (click)="seleccionarTeleconsulta(service)"
+              [disabled]="teleconsulta.consecutivo == service.consecutivo"
+              >
+
+              {{(teleconsulta.consecutivo == service.consecutivo)?'Teleconsulta Activa':'Activar Teleconsulta'}}
+      </button>
+    </td>
+  </tr>
+  </tbody>
+</table>

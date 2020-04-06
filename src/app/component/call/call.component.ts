@@ -1,7 +1,9 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
 import { Observable, of } from 'rxjs';
+import { EventEmitter } from '@angular/core';
+import { environment } from 'src/environments/environment';
 declare var Peer;
 @Component({
   selector: 'app-call',
@@ -9,7 +11,6 @@ declare var Peer;
   styleUrls: ['./call.component.scss']
 })
 export class CallComponent implements OnInit {
-
   public peer:any;
   public key:string;
   public myPeerId:string;
@@ -31,18 +32,25 @@ export class CallComponent implements OnInit {
     if(documento){
 
       this.peer = new Peer(documento+'rmv',{
-        host : 'localhost',
+        host:environment.peerConf.ip,
+        path:environment.peerConf.path,
         port:9000,
         debug:0,
+        secure:environment.peerConf.secure
       });
     }else{ 
       this.peer = new Peer({
-        host : 'localhost',
+        host:environment.peerConf.ip,
+        path:environment.peerConf.path,
         port:9000,
+        debug:0,
+        // secure:true
       });
     }    
     this.peer.on('connection',(conn)=>{
       conn.on('data',async (data)=>{
+
+        console.log("hola")
         console.log(conn,data);
         let hangout = await Swal.fire({
           title:'Alguien te quiere llamar, deseas contestar?',
@@ -78,6 +86,7 @@ export class CallComponent implements OnInit {
     });
     
   }
+  
   ngOnInit(): void {
     this._router.params.subscribe(params=>{
       if(params.medicId){
@@ -88,6 +97,7 @@ export class CallComponent implements OnInit {
   }
 
   connect(){
+    console.log("hola")
     const conn = this.peer.connect(this.key)
     conn.on('open',(data)=>{
       this.inCall = true;

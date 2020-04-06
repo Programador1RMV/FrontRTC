@@ -4,7 +4,13 @@
 
 export const environment = {
   production: false,
-  apiUri:`https://186.0.101.45:3000`,
+  apiUri:`https://localhost:3000`,
+  peerConf:{
+    ip:'186.0.101.45',
+    path:'/',
+    secure:true
+  }
+
 
 };
 

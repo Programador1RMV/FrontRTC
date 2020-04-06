@@ -1,0 +1,18 @@
+<div class="container">
+  <header class="d-block p-1"><span class="float-right">{{medico}}: {{documento}}</span></header>
+  <ul ngbNav [(activeId)]="currentTab" class="nav-tabs">
+    <li [ngbNavItem]="1" >
+      <a ngbNavLink>Teleconsultas</a>
+    </li>
+    <li [ngbNavItem]="2">
+      <a ngbNavLink>Llamadas</a>
+    </li>
+    <li [ngbNavItem] [disabled]="true" class="float-left">
+    </li>
+  </ul>
+  <div width="100%">
+    <app-call class="medico"  [ngClass]="{'hidden':currentTab != 2}"></app-call>
+    <app-formulario class="float-right mt-2" [teleconsulta]="teleconsultaSeleccionada" [ngClass]="{'hidden':currentTab != 2}"></app-formulario>
+  </div>
+  <app-servicios [teleconsulta]="teleconsultaSeleccionada" (teleconsultaSeleccionada)="cambioPestanaYSeleccionarTeleconsulta($event)" [ngClass]="{'hidden':currentTab !=1}"></app-servicios>
+</div>
