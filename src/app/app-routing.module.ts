@@ -12,7 +12,7 @@ const routes: Routes = [
   {
     path:'paciente',children:[
       {path:'', component:FormularioPacienteComponent},
-      {path:':medicId/:paciente',component:PacienteComponent}
+      {path:':medicId',component:PacienteComponent}
     ],
   },
   {

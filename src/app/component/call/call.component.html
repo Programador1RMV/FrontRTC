@@ -3,4 +3,5 @@
     <video #video class="input" [ngClass]="{hidden:!inCall}"></video>
     <button *ngIf="!inCall" (click)="connect()" [ngClass]="{green:peer.id}">Activar llamada <i class="fa fa-phone"></i></button>
     <button  *ngIf="!inCall" [ngClass]="{'btn btn-info':peer.id}" class="boton">Generar enlace <i class="fas fa-link"></i></button>
+    <button [ngClass]="{'btn btn-danger':peer.id}" class="finalizar-consulta">Finalizar consulta <i class="fas fa-phone"></i></button>
 </div>

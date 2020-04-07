@@ -1,5 +1,5 @@
 import { Component, OnInit} from '@angular/core';
-import { Paciente } from './entities';
+import { Paciente, SesionPaciente } from './entities';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { PacienteService } from 'src/app/services/paciente.service';
@@ -11,20 +11,17 @@ import { PacienteService } from 'src/app/services/paciente.service';
 })
 export class PacienteComponent implements OnInit {
   
-  public paciente:Paciente;
+  public paciente:SesionPaciente;
   public form:FormGroup;
   constructor(private _router:ActivatedRoute, private _paciente:PacienteService) {
   }
 
   ngOnInit(): void {
-    this.paciente = new Paciente();
-    this._router.params.subscribe(({paciente})=>{
-      if(paciente){
-        this._paciente.infoPaciente(paciente).subscribe(paciente=>{
-          this.paciente = paciente;
-        });
-      }
-    })
+    this.paciente = new SesionPaciente();
+    this._router.queryParams.subscribe(params=>{
+      console.log(params);
+      this.paciente = <SesionPaciente>params;
+    });
   }
 
 }

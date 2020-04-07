@@ -3,3 +3,12 @@ export class Paciente{
     public documento:string;
     public nombreMedico:string;
 }
+
+export class SesionPaciente{
+    public documento_ap:string;
+    public consecutivo:string;
+    public cedula:string;
+    public nombre:string;
+    public nombreMedico:string;
+    public documentoMedico:string;
+}

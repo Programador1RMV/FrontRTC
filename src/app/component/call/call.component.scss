@@ -58,7 +58,7 @@
     }
 
     &:not(.medico){
-        button{
+        button:not(.fin-consulta){
             display: none !important;
         }
     }

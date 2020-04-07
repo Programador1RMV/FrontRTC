@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PacienteService } from 'src/app/services/paciente.service';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-formulario-paciente',
@@ -12,7 +13,7 @@ export class FormularioPacienteComponent implements OnInit {
 
   public form:FormGroup;
   public loading:boolean;
-  constructor(private _paciente:PacienteService) { 
+  constructor(private _paciente:PacienteService, private router:Router) { 
     this.form = this.newForm();
     this.loading = false;
   }
@@ -36,6 +37,8 @@ export class FormularioPacienteComponent implements OnInit {
           icon:'error',
           text:'No se encontró un beneficiario con ese documento con una teleconsulta activa'
         })
+      }else{ 
+        this.router.navigate(['/paciente',`${succ.documentoMedico}rmv`],{queryParams:{...succ}, skipLocationChange:true});
       }
       this.loading = false;
     })
