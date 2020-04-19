@@ -6,6 +6,7 @@ import { MedicoComponent } from './component/medico/medico.component';
 import { CloseGuard } from './guards/close.guard';
 import { FormularioPacienteComponent } from './component/formulario-paciente/formulario-paciente.component';
 import { PacienteComponent } from './component/paciente/paciente.component';
+import { EncuestaComponent } from './component/encuesta/encuesta.component';
 
 
 const routes: Routes = [
@@ -17,7 +18,8 @@ const routes: Routes = [
   },
   {
     path:'medico',component:MedicoComponent,canActivate:[MedicoGuard],canDeactivate:[CloseGuard]
-  }
+  },
+  {path:'encuesta', component:EncuestaComponent}
 ];
 
 @NgModule({

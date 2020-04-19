@@ -1,14 +1,29 @@
 <div class="jumbotron jumbotron-fluid">
   <form class="container" [formGroup]="form" (ngSubmit)="onSubmit($event)">
-      <h1 class="display-4">Ingrese su número de docummento</h1>
-      <p class="lead"><input formControlName="documento" type="text" class="form-control"></p>
-      <p class="lead">
-          <span class="my-auto"> 
-              Acepto terminos y condiciones <input formControlName="terms" type="checkbox" />
-          </span>
-      </p>
-      <p class="lead">
-          <button class="btn btn-primary float-left" type="submit">Buscar</button>
-      </p>
+    <h1 class="display-4">Ingrese el número de su consecutivo</h1>
+    <p class="lead">
+        <input 
+               formControlName="radicado"
+               [ngClass]="{
+                            'is-invalid': form.get('radicado').errors?.pattern || (form.get('radicado').touched && !form.get('radicado').valid) ,
+                            'is-valid': form.get('radicado').valid
+                          }" 
+                type="text" class="form-control">
+        <span class="lead text-danger d-block" *ngIf="form.get('radicado').errors?.pattern"> Sólo debe ingresar números </span>
+        <span class="lead text-danger d-block" *ngIf="form.get('radicado').touched && !form.get('radicado').valid "> Campo requerido </span>
+    </p>
+    <p class="lead">
+        <span class="my-auto" [ngClass]="{'text-danger':!form.get('terms').valid}"> 
+            Acepto terminos y condiciones <strong>* </strong> <input formControlName="terms" type="checkbox" />
+        </span>
+    </p>
+    <p>
+        <re-captcha style="width: 100%;"  formControlName="captcha" [siteKey]="'6Ld_5ekUAAAAAMjVbCrMl_aRlcTc_liFziGRQorc'" ></re-captcha>
+        <strong><div *ngIf="!form.get('captcha').valid" class="text-danger"> Este campo es requerido </div></strong>
+    </p>
+    
+    <p class="lead float-left">
+        <button [disabled]="!form.valid" class="btn btn-primary float-right" type="submit">Buscar</button>
+    </p>
   </form>
 </div>

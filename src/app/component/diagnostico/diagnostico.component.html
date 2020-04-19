@@ -1,0 +1,34 @@
+<div class="contenido">
+    <div class="close" (click)="close()">X</div>
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class="input-group my-5">
+                <input type="text" class="form-control" (keyup.enter)="buscar()" placeholder="Search" [(ngModel)]="busqueda">
+                <div class="input-group-append">
+                  <button class="btn btn-success" type="button" (click)="buscar()" >Buscar</button>
+                </div>
+              </div>
+        </div>
+        <div class="col-12 table-scrolable">
+            <table class="table table-scrolable">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Sintoma</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let diag of diagnosticos | paginate:{itemsPerPage:6,currentPage:page}">
+                        <td>{{ diag.cod }}</td>
+                        <td>{{ diag.diagnostico }}</td>
+                        <td>
+                            <button class="btn btn-success" (click)="seleccionar(diag)">Seleccionar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <pagination-controls (pageChange)="page = $event"></pagination-controls>
+        </div>
+    </div>
+</div>

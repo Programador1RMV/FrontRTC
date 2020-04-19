@@ -5,7 +5,10 @@
             grid-template-areas: "video  video  video  video"
             "me     me     me     me"
             "button button button button"
-            "buton  buton  buton  buton";   
+            "buton  buton  buton  buton" !important;   
+        }
+        .finalizar-consulta{
+            display: none !important;
         }
     }
     
@@ -13,7 +16,9 @@
         min-width: 100%;
         min-width: 35vw;
         display:grid;
-        grid-area: "video me";
+        grid-template-areas: "video me"
+                   "video me"
+                   "fin   fin" !important;
         margin:auto;
         height:auto;
         min-height: 95vh;
@@ -38,7 +43,6 @@
             margin: 1em auto;
             padding: 1em;
             border:none;
-            color:whitesmoke;
             grid-area: button;
         }
 
@@ -55,10 +59,14 @@
         .formulario{
             grid-area: form;
         }
+
+        .finalizar-consulta{
+            grid-area:fin;
+        }
     }
 
-    &:not(.medico){
-        button:not(.fin-consulta){
+    &.paciente{
+        button:not(.finalizar-consulta):not(.enviar){
             display: none !important;
         }
     }

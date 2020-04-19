@@ -1,4 +1,4 @@
 <div class="container">
     <span class="float-left bg-primary  text-white font-weight-bold w-100 p-5 text-right">{{paciente.nombre}} : {{ paciente.documento_ap }} {{ paciente.cedula}}</span>
-    <app-call class="paciente"></app-call>
+    <app-call (cierreVentana)="marcarEncuestaComoNoContestada()"  (colgado)="llamadaFinalizada()" class="paciente"></app-call>
 </div>

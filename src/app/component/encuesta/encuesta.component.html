@@ -1,0 +1,18 @@
+<div class="container mt-5">
+    <form [formGroup]="form">
+        <ng-container formArrayName="preguntas">
+            <div *ngFor="let control of pregs.controls; index as i">
+                <div [formGroupName]="i" class="row mt-3">
+                    <label class="col">
+                        {{ control.get('pregunta').value }}
+                    </label>
+                    <div *ngFor="let values of keysAndValues; index as ind" class="col">
+                        <span>{{values.tooltip}}</span>
+                       {{values.value}} <input type="radio" formControlName="valoracion" [value]="values.value"  [ngbTooltip]="values.tooltip" />
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        <button class="btn btn-success float-right" (click)="saveEncuesta()">Finalizar</button>
+    </form>
+</div>

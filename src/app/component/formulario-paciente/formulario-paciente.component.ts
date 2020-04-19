@@ -22,20 +22,21 @@ export class FormularioPacienteComponent implements OnInit {
   }
   newForm():FormGroup{
     return new FormGroup({
-      documento:new FormControl('',[Validators.required]),
-      terms:new FormControl('',[Validators.required])
+      radicado:new FormControl('',[Validators.required,Validators.pattern(/^\d+$/)]),
+      terms:new FormControl('',[Validators.requiredTrue]),
+      captcha:new FormControl('',[Validators.required])
     })
   }
 
   onSubmit(event:Event):void{
     event.preventDefault();
     this.loading = true;
-    this._paciente.medicOfPatience(this.form.value.documento).subscribe(succ=>{
+    this._paciente.medicOfPatience(this.form.value.radicado).subscribe(succ=>{
       if(!succ){
         Swal.fire({
           title:'Error',
           icon:'error',
-          text:'No se encontró un beneficiario con ese documento con una teleconsulta activa'
+          text:'No se encontró un beneficiario con ese documento con una teleconsulta activa, puede que su médico aún no halla activado el servicio, intente más tarde'
         })
       }else{ 
         this.router.navigate(['/paciente',`${succ.documentoMedico}rmv`],{queryParams:{...succ}, skipLocationChange:true});
@@ -43,5 +44,9 @@ export class FormularioPacienteComponent implements OnInit {
       this.loading = false;
     })
     
+  }
+
+  noEsRobot(event){
+    console.log(event);
   }
 }

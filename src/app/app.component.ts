@@ -8,10 +8,4 @@ declare var Peer:any
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  @HostListener('window:beforeunload',['$event'])
-  async preventClose(){
-    let {value,dismiss} = await Swal.fire({
-
-    })
-  }
 }

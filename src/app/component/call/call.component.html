@@ -2,6 +2,16 @@
     <video #me class="me responsive" [ngClass]="{left:inCall}"></video>
     <video #video class="input" [ngClass]="{hidden:!inCall}"></video>
     <button *ngIf="!inCall" (click)="connect()" [ngClass]="{green:peer.id}">Activar llamada <i class="fa fa-phone"></i></button>
-    <button  *ngIf="!inCall" [ngClass]="{'btn btn-info':peer.id}" class="boton">Generar enlace <i class="fas fa-link"></i></button>
-    <button [ngClass]="{'btn btn-danger':peer.id}" class="finalizar-consulta">Finalizar consulta <i class="fas fa-phone"></i></button>
+    <button  *ngIf="!inCall" [ngClass]="{'btn btn-info':peer.id}" (click)="enviarSMS()" class="boton">Generar enlace <i class="fas fa-link"></i></button>
+    <button [ngClass]="{'btn btn-danger':peer.id}" class="finalizar-consulta" (click)="colgar()">Finalizar consulta <i class="fas fa-phone"></i></button>
+    <fieldset *ngIf="inCall">
+        <textarea disabled class="form-control" [(ngModel)]="mensaje">{{mensaje}}</textarea>
+        <div class="input-group">
+            <input type="text" class="form-control" (keyup.enter)="enviarMensaje()" [(ngModel)]="mensajeTemp">
+            <div class="input-group-append">
+                <button class="btn btn-success enviar" (click)="enviarMensaje()">Enviar</button>
+
+            </div>
+        </div>
+    </fieldset>
 </div>

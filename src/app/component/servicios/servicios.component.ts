@@ -18,9 +18,7 @@ export class ServiciosComponent implements OnInit {
   
   
   ngOnInit(): void {
-    this._medicos.teleconsultas().subscribe(teleconsultas=>{
-      this.teleconsultas = teleconsultas;
-    });
+    this.loadServices();
     this.teleconsulta = new Teleconsulta();
   }
 
@@ -28,4 +26,18 @@ export class ServiciosComponent implements OnInit {
     this.teleconsultaSeleccionada.emit(teleconsulta);
   }
 
+  finalizarServicio(teleconsulta:Teleconsulta){
+    for(let [index,value] of this.teleconsultas.entries()){
+      console.log(value,teleconsulta,value===teleconsulta);
+      if(value === teleconsulta){
+        console.log(this.teleconsultas.splice(index,1));
+      }
+    }
+  }
+
+  loadServices(){
+    this._medicos.teleconsultas().subscribe(teleconsultas=>{
+      this.teleconsultas = teleconsultas;
+    });
+  }
 }
