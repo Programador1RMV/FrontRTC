@@ -22,9 +22,6 @@ export class MedicoComponent implements OnInit,AfterViewInit {
   @ViewChild(ServiciosComponent) servicios:ServiciosComponent;
   constructor(private __medico:MedicoService,private __chat:ChatService) { 
     this.currentTab = 1;
-    this.__chat.chat.subscribe(mensaje=>{
-      console.log(mensaje);
-    })
     this.documento = localStorage.getItem("documento");
     this.medico = JSON.parse(localStorage.getItem("user")).name;
   }

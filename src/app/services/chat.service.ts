@@ -5,6 +5,4 @@ import { Socket } from 'ngx-socket-io';
   providedIn: 'root'
 })
 export class ChatService {
-  public chat = this.wss.fromEvent('message');
-  constructor(public wss:Socket) { }
 }

@@ -46,10 +46,7 @@ import { WrappedSocket } from 'ngx-socket-io/src/socket-io.service';
     NgxPaginationModule,
     NgbTooltipModule,
     RecaptchaModule,
-    RecaptchaFormsModule,
-    SocketIoModule.forRoot({
-      url:'wss://186.0.101.45:3000/chat'
-    })
+    RecaptchaFormsModule
   ],
   providers: [
     AuthService
