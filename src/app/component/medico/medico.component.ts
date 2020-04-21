@@ -6,6 +6,7 @@ import { ServiciosComponent } from '../servicios/servicios.component';
 import { MedicoService } from 'src/app/services/medico.service';
 import Swal from 'sweetalert2';
 import { ChatService } from 'src/app/services/chat.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-medico',
@@ -41,6 +42,7 @@ export class MedicoComponent implements OnInit,AfterViewInit {
   finServicio(){
     console.log('fin');
     this.servicios.finalizarServicio(this.teleconsultaSeleccionada);
+    this.teleconsultaSeleccionada = new Teleconsulta();
     this.llamada.colgar();
   }
 
@@ -49,21 +51,41 @@ export class MedicoComponent implements OnInit,AfterViewInit {
     window.location.reload();
   }
 
-  enviarMensjaePaciente(){
-    console.log(this.teleconsultaSeleccionada.bencel,this.teleconsultaSeleccionada.consecutivo);
-    if(this.teleconsultaSeleccionada.bencel !== null && this.teleconsultaSeleccionada.bencel !== undefined ){
-      this.__medico.sendSMS(this.teleconsultaSeleccionada.consecutivo).subscribe(succ=>{
-        Swal.fire({
-          timer:2000,
-          title:'Exito',
-          text:'Enviamos con exito el enlace al paciente',
-          showConfirmButton:false
-        })
+  async enviarMensjaePaciente(){
+    let {value,dismiss}= await Swal.fire({
+      input:'tel',
+      text:'Ingrese el número al que desea enviar notificación',
+      title:'Número de notificación',
+      showCancelButton:false
+    });
+    if(!dismiss){
+      let {value:valor, dismiss:cerrado } = await Swal.fire({
+        title:'Enviar enlace',
+        text:`Está seguro de enviar enlace de la consulta al numero ${value}?`,
+        showCancelButton:true,
+        cancelButtonText:'No enviar'
       });
+      if(cerrado){
+        return;
+      }
+      await this.__medico.updateBencel(this.teleconsultaSeleccionada.consecutivo,value).toPromise();
+      this.teleconsultaSeleccionada.bencel = value;
     }
+    this.__medico.sendSMS(this.teleconsultaSeleccionada.consecutivo,this.teleconsultaSeleccionada.bencel).subscribe(succ=>{
+      Swal.fire({
+        timer:2000,
+        title:'Exito',
+        text:'Enviamos con exito el enlace al paciente',
+        showConfirmButton:false
+      })
+    });
   }
 
   setMessage(value){
     this.formulario.formulario.get("mensajes").setValue(value);
+  }
+
+  setStartHour(){
+    this.formulario.formulario.get('horaInicio').setValue(moment());
   }
 }

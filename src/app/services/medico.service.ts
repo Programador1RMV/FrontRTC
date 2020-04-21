@@ -4,12 +4,13 @@ import { Observable } from 'rxjs';
 import { Teleconsulta } from '../component/servicios/entities';
 import { environment } from 'src/environments/environment';
 import { Diagnostico } from '../component/medico/entities';
+import { Socket } from 'ngx-socket-io';
 @Injectable({
   providedIn: 'root'
 })
 export class MedicoService {
   
-  constructor(private _http:HttpClient) {}
+  constructor(private _http:HttpClient, private socket:Socket) {}
 
   public teleconsultas():Observable<Array<Teleconsulta>>{
     let documento = localStorage.getItem(`documento`)
@@ -26,5 +27,8 @@ export class MedicoService {
 
   public sendSMS(csc,telefono?){
     return this._http.get(`${environment.apiUri}/medicos/numero/${csc}/${telefono}`);
+  }
+  updateBencel(consecutivo,telefono){
+    return this._http.put(`${environment.apiUri}/medicos/servicio/${consecutivo}/bentel`,{telefono});
   }
 }

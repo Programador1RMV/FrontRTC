@@ -18,7 +18,7 @@ export class CallComponent implements OnInit {
   public inCall:boolean;
   public mensajeTemp:string;
   public mensaje:string;
-  @Output() colgado:EventEmitter<void>;
+  @Output() colgado:EventEmitter<any>;
   @ViewChild('video',{static:true}) public video:ElementRef<HTMLVideoElement>;
   @ViewChild('me',{static:false}) public me:ElementRef<HTMLVideoElement>;
   @Output() newMessage:EventEmitter<string>;
@@ -26,9 +26,11 @@ export class CallComponent implements OnInit {
   conn: any;
   llamada: any;
   @Output() sendSMS: EventEmitter<void>;
+  @Output() inicioLlamada:EventEmitter<any>;
   constructor(private _router:ActivatedRoute,private _route:Router,private __medico:MedicoService){
     this.mensaje = '';
     this.newMessage = new EventEmitter<string>();
+    this.inicioLlamada = new EventEmitter();
     this.colgado = new EventEmitter();
     this.sendSMS = new EventEmitter();
     this.cierreVentana = new EventEmitter();
@@ -71,7 +73,6 @@ export class CallComponent implements OnInit {
         }
         
         if(data.message){
-          console.log(data);
           this.mensaje = this.mensaje.concat(`${data.message}\n`);
           this.newMessage.emit(this.mensaje);
           return;
@@ -86,17 +87,17 @@ export class CallComponent implements OnInit {
           this.inCall = true;
           this.key = data;
           this.conn = this.peer.connect(data);
+          this.inicioLlamada.emit();
           this.videoConnect();
         }
       });
     })
     this.peer.on('call',async (call)=>{
       this.inCall = true;
+      this.inicioLlamada.emit();
       this.llamada = call;
-      console.log(call)
       this.llamada.on('close',()=>{
         this.inCall = false;
-        console.log(call)
         this.video.nativeElement.srcObject = null;
         this.video.nativeElement.pause();
       })
@@ -114,7 +115,6 @@ export class CallComponent implements OnInit {
   
   ngOnInit(): void {
     this._router.params.subscribe(params=>{
-      console.log(params)
       if(params.medicId){
         this.key = params.medicId;
         this.connect();
@@ -148,7 +148,6 @@ export class CallComponent implements OnInit {
         });
         this.llamada.on('close',()=>{
           this.inCall = false;
-          console.log("close")
           this.video.nativeElement.srcObject = null;
           this.video.nativeElement.pause();
         })        

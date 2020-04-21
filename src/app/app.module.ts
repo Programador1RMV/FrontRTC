@@ -21,6 +21,7 @@ import { EncuestaComponent } from './component/encuesta/encuesta.component';
 import { DiagnosticoComponent } from './component/diagnostico/diagnostico.component';
 import { SocketIoModule, Socket } from 'ngx-socket-io';
 import { WrappedSocket } from 'ngx-socket-io/src/socket-io.service';
+import { environment } from 'src/environments/environment';
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,7 +47,11 @@ import { WrappedSocket } from 'ngx-socket-io/src/socket-io.service';
     NgxPaginationModule,
     NgbTooltipModule,
     RecaptchaModule,
-    RecaptchaFormsModule
+    RecaptchaFormsModule,
+    SocketIoModule.forRoot({
+      url:`${environment.peerConf.secure? 'https':'http'}://${environment.peerConf.ip}:3000/chat`,
+      options:{}
+    })
   ],
   providers: [
     AuthService

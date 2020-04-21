@@ -11,7 +11,7 @@
     </li>
   </ul>
   <div width="100%">
-    <app-call (sendSMS)="enviarMensjaePaciente()" (newMessage)="setMessage($event)" class="medico"  [ngClass]="{'hidden':currentTab != 2}"></app-call>
+    <app-call (sendSMS)="enviarMensjaePaciente()" (newMessage)="setMessage($event)" class="medico" (inicioLlamada)="setStartHour()" [ngClass]="{'hidden':currentTab != 2}"></app-call>
     <app-formulario class="float-right mt-2" (finConsulta)="finServicio()" [teleconsulta]="teleconsultaSeleccionada" [ngClass]="{'hidden':currentTab != 2}"></app-formulario>
   </div>
   <app-servicios [teleconsulta]="teleconsultaSeleccionada" (teleconsultaSeleccionada)="cambioPestanaYSeleccionarTeleconsulta($event)" [ngClass]="{'hidden':currentTab !=1}"></app-servicios>

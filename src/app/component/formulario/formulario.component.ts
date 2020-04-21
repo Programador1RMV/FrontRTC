@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MedicoService } from 'src/app/services/medico.service';
 import { Diagnostico } from '../medico/entities';
 import Swal from 'sweetalert2';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-formulario',
@@ -40,7 +41,8 @@ export class FormularioComponent implements OnInit {
       requiereSeguimiento:new FormControl(false),
       diagnostico:new FormControl(null),
       mensajes:new FormControl(null),
-      cedulaCliente:new FormControl(cedulaCliente)
+      cedulaCliente:new FormControl(cedulaCliente),
+      horaInicio:new FormControl(null)
     })
   }
   setNotas(antecedentes,nConsulta,nOperador,consecutivo,cedulaCliente){
@@ -71,5 +73,14 @@ export class FormularioComponent implements OnInit {
     });
     this.formulario = this.newForm();
     
+  }
+
+  get tiempoTranscurrido():string{
+    if(this.formulario.get('horaInicio').value === null){
+      return '';
+    }
+    let min = moment().diff(this.formulario.get('horaInicio').value,'minutes');
+    let sec = moment().diff(this.formulario.get('horaInicio').value,'seconds');
+    return `${min}:${sec}`;
   }
 }
