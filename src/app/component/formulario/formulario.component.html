@@ -41,7 +41,7 @@
         </div>
         <div class="col-6 ml-auto">
             <button class="btn btn-success float-left" (click)="finalizarConsulta()">finalizar teleconsulta</button>
-            <p class="font-italic">{{ tiempoTranscurrido }}</p>
+            <p class="font-italic" *ngIf="this.formulario.get('horaInicio').value">{{ tiempoTranscurrido }}</p>
         </div>
       </div>
     </form>

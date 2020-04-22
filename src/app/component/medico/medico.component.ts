@@ -87,5 +87,6 @@ export class MedicoComponent implements OnInit,AfterViewInit {
 
   setStartHour(){
     this.formulario.formulario.get('horaInicio').setValue(moment());
+    this.formulario.iniciarTemporizador();
   }
 }

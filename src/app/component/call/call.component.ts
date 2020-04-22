@@ -114,6 +114,7 @@ export class CallComponent implements OnInit {
   }
   
   ngOnInit(): void {
+    this.inCall = false;
     this._router.params.subscribe(params=>{
       if(params.medicId){
         this.key = params.medicId;

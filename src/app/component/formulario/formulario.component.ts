@@ -18,11 +18,14 @@ export class FormularioComponent implements OnInit {
   teleconsulta?:Teleconsulta;
   public diagnosticos:Array<Diagnostico>;
   public formulario:FormGroup;
+  public tiempoTranscurrido;
+  public contador;
   //Campo que dice si se está seleccionando un CIE10
   public cie10:boolean;
   @Output() finConsulta:EventEmitter<string>;
   constructor(private _medico:MedicoService) {
     this.cie10 = false;
+    this.tiempoTranscurrido = '';
     this.finConsulta = new EventEmitter<string>();
   }
   ngOnInit(): void {
@@ -65,6 +68,7 @@ export class FormularioComponent implements OnInit {
     let value = this.formulario.value;
     if(value.consecutivo === undefined || value.consecutivo === null){
       Swal.fire('Error','debes de tener una teleconsulta activa para poder finalizarla','error');
+      clearInterval(this.contador);
       return;
     }
     
@@ -75,12 +79,11 @@ export class FormularioComponent implements OnInit {
     
   }
 
-  get tiempoTranscurrido():string{
-    if(this.formulario.get('horaInicio').value === null){
-      return '';
-    }
-    let min = moment().diff(this.formulario.get('horaInicio').value,'minutes');
-    let sec = moment().diff(this.formulario.get('horaInicio').value,'seconds');
-    return `${min}:${sec}`;
+  iniciarTemporizador(){
+    this.contador = setInterval(()=>{
+      let min = moment().diff(this.formulario.get('horaInicio').value,'minutes');
+      let sec = Math.round(moment().diff(this.formulario.get('horaInicio').value,'seconds') % 60);
+      this.tiempoTranscurrido = `${min}:${sec < 10 ?`0${sec}`:sec }`;
+    })
   }
 }
