@@ -1,0 +1,12 @@
+.hidden{
+    display: none;
+}
+div.sala-de-espera{
+    position: fixed;
+    z-index: 1;
+    height: 100vh;
+    width: 100vw;
+    background-color: #fff;
+    text-align: center;
+    justify-content: center;
+}

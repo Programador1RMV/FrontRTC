@@ -89,4 +89,13 @@ export class MedicoComponent implements OnInit,AfterViewInit {
     this.formulario.formulario.get('horaInicio').setValue(moment());
     this.formulario.iniciarTemporizador();
   }
+
+  markAsConnected(csc){
+    for(let i=0;i<this.servicios.teleconsultas.length;i++){
+      let teleconsulta = this.servicios.teleconsultas[i]
+      if(teleconsulta.consecutivo === csc){
+        this.servicios.teleconsultas[i].teleconsultaActiva = true;
+      }
+    }
+  }
 }

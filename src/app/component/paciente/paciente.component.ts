@@ -38,7 +38,7 @@ export class PacienteComponent implements OnInit,AfterViewInit {
   }
 
   get inCall():boolean{
-    
-    return  this.inLlamada.inCall || false;
+    let llamada = {...this.llamada};
+    return  llamada.inCall || false;
   }
 }

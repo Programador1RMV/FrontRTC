@@ -5,10 +5,11 @@
 export const environment = {
   production: false,
   apiUri:`https://localhost:3000`,
+  backSecure:true,
   peerConf:{
-    ip:'localhost',
-    path:'/',
-    secure:true
+    ip:'190.128.118.236',
+    path:'/myapp',
+    secure:false
   }
 
 

@@ -8,5 +8,6 @@ export class Teleconsulta{
     antecedentes:string;
     nConsulta:string;
     nOperador:string;
+    teleconsultaActiva:boolean;
     bencel:string;
 }

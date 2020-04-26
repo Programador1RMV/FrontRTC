@@ -1,7 +1,7 @@
 <div class="container float-left">
     <span><strong>Signos Y sintomas: </strong> {{teleconsulta.signosSintomas}}</span><br>
     <span><strong>Evaluación:</strong> {{teleconsulta.evaluacion}}</span>
-    <form class="row" [formGroup]="formulario" (ngSubmit)="onSubmit($event)">
+    <form class="row" [formGroup]="formulario" (change)="onChanges()" (ngSubmit)="onSubmit($event)">
       <div class="col-12 mt-3">
         <div class="col-12">
           <div class="form-group">
@@ -37,6 +37,15 @@
         <div class="col-12">
           <label>Asignar despacho? <span class="btn" [ngClass]="{'btn-success':formulario.controls['asignarDespacho'].value,'btn-danger':!formulario.controls['asignarDespacho'].value}">{{formulario.controls['asignarDespacho'].value? 'Si':'No'}} </span><input type="checkbox" style="display: none;" formControlName="asignarDespacho"> </label> <br>  
           <label>Requiere seguimiento?? <span class="btn" [ngClass]="{'btn-success':formulario.controls['requiereSeguimiento'].value,'btn-danger':!formulario.controls['requiereSeguimiento'].value}">{{formulario.controls['requiereSeguimiento'].value? 'Si':'No'}} </span><input type="checkbox" style="display: none;" formControlName="requiereSeguimiento"> </label> <br>
+          <label>
+            Novedades 
+            <select class="form-control" formControlName="novedades">
+              <option value="">Seleccionar una opción</option>
+              <option value="consulta terminada por telefono">Consulta terminada por telefóno</option>
+              <option value="No contesta">No contesta</option>
+              <option value="Problema de conexión">Problema de conexión</option>
+            </select>
+          </label> <br>
           <label for="cie10">CIE10: <button id="cie10" class="btn btn-info" (click)="cie10 = !cie10">Cie10</button> <i *ngIf="formulario.controls['diagnostico'].value" class="fas fa-check ml-1 text-success"></i> {{ formulario.controls['diagnostico'].value }} </label>
         </div>
         <div class="col-6 ml-auto">

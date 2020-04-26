@@ -49,7 +49,7 @@ import { environment } from 'src/environments/environment';
     RecaptchaModule,
     RecaptchaFormsModule,
     SocketIoModule.forRoot({
-      url:`${environment.peerConf.secure? 'https':'http'}://${environment.peerConf.ip}:3000/chat`,
+      url:`${environment.backSecure? 'https':'http'}://${environment.peerConf.ip}:3000/chat`,
       options:{}
     })
   ],

@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy, Output, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { Observable, of } from 'rxjs';
 import { EventEmitter } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { MedicoService } from 'src/app/services/medico.service';
@@ -23,14 +22,18 @@ export class CallComponent implements OnInit {
   @ViewChild('me',{static:false}) public me:ElementRef<HTMLVideoElement>;
   @Output() newMessage:EventEmitter<string>;
   @Output() cierreVentana: EventEmitter<void>;
+  @Output() markAsConnected:EventEmitter<string>;
   conn: any;
   llamada: any;
   @Output() sendSMS: EventEmitter<void>;
   @Output() inicioLlamada:EventEmitter<any>;
+  remoteStream: any;
+  localStream: any;
   constructor(private _router:ActivatedRoute,private _route:Router,private __medico:MedicoService){
     this.mensaje = '';
     this.newMessage = new EventEmitter<string>();
     this.inicioLlamada = new EventEmitter();
+    this.markAsConnected = new EventEmitter<string>();
     this.colgado = new EventEmitter();
     this.sendSMS = new EventEmitter();
     this.cierreVentana = new EventEmitter();
@@ -40,8 +43,10 @@ export class CallComponent implements OnInit {
       browser.webkitGetUserMedia ||
       browser.mozGetUserMedia ||
       browser.msGetUserMedia);
-    browser.getUserMedia({audio:false,video:true},(stream)=>{
+    browser.getUserMedia({audio:true,video:true},(stream)=>{
       this.me.nativeElement.srcObject = stream;
+      this.me.nativeElement.volume = 0;
+      this.localStream = stream;
       this.me.nativeElement.play();
     })
     let documento= JSON.parse(localStorage.getItem('documento'));
@@ -66,6 +71,7 @@ export class CallComponent implements OnInit {
     }    
     this.peer.on('connection',(conn)=>{
       conn.on('data',async (data)=>{
+        console.log(data);
         if(data.action){
           this.colgado.emit();
           this.inCall = false;
@@ -77,18 +83,25 @@ export class CallComponent implements OnInit {
           this.newMessage.emit(this.mensaje);
           return;
         }
-        let hangout = await Swal.fire({
-          title:'Alguien te quiere llamar, deseas contestar?',
-          showCancelButton:true,
-          allowOutsideClick:false
-        });
-
-        if(!hangout.dismiss){
-          this.inCall = true;
-          this.key = data;
-          this.conn = this.peer.connect(data);
-          this.inicioLlamada.emit();
-          this.videoConnect();
+        if(data.key && !data.call){
+          this.key = data.key;
+          this.markAsConnected.emit();
+          this.conn = this.peer.connect(data.key);
+          return;
+        }
+        if(data.call){
+          let hangout = await Swal.fire({
+            title:'Alguien te quiere llamar, deseas contestar?',
+            showCancelButton:true,
+            allowOutsideClick:false
+          });
+  
+          if(!hangout.dismiss){
+            this.inCall = true;
+            this.conn = this.peer.connect(data.key);
+            this.inicioLlamada.emit();
+            this.videoConnect();
+          }
         }
       });
     })
@@ -104,8 +117,10 @@ export class CallComponent implements OnInit {
       browser.getUserMedia({audio:true,video:true},
         (stream)=>{
           call.answer(stream);
+          this.remoteStream = stream;
           call.on('stream',(remoteStream)=>{
             this.video.nativeElement.srcObject = remoteStream;
+            this.remoteStream = remoteStream;
             this.video.nativeElement.play();
           });
       })
@@ -115,7 +130,7 @@ export class CallComponent implements OnInit {
   
   ngOnInit(): void {
     this.inCall = false;
-    this._router.params.subscribe(params=>{
+    this._router.params.subscribe(params=>{      
       if(params.medicId){
         this.key = params.medicId;
         this.connect();
@@ -123,36 +138,44 @@ export class CallComponent implements OnInit {
     })
   }
 
+  notifyCall(data){
+    console.log(data);
+    this.conn.send(data);
+  }
+
   connect(){
     this.conn = this.peer.connect(this.key)
     this.conn.on('open',(data)=>{
-      this.inCall = true;
-      this.conn.send(this.peer.id);
+      this.conn.send({key:this.peer.id});
     })
   }
 
   async videoConnect(){
     const video = this.video.nativeElement;
     var browser = <any>navigator;
-
-    browser.getUserMedia = (browser.getUserMedia ||
-      browser.webkitGetUserMedia ||
-      browser.mozGetUserMedia ||
-      browser.msGetUserMedia);
-    browser.getUserMedia({audio:true,video:true},
-      (stream)=>{
-        this.inCall = true;
-        this.llamada = this.peer.call(this.key,stream);
-        this.llamada.on('stream',(remoteStream)=>{
-          video.srcObject = remoteStream;
-          video.play();
-        });
-        this.llamada.on('close',()=>{
-          this.inCall = false;
-          this.video.nativeElement.srcObject = null;
-          this.video.nativeElement.pause();
-        })        
+    if(this.key !== null && this.key !== undefined ){
+      browser.getUserMedia = (browser.getUserMedia ||
+        browser.webkitGetUserMedia ||
+        browser.mozGetUserMedia ||
+        browser.msGetUserMedia);
+      browser.getUserMedia({audio:true,video:true},
+        (stream)=>{
+          this.localStream = stream;
+          this.inCall = true;
+          this.llamada = this.peer.call(this.key,stream);
+          this.llamada.on('stream',(remoteStream)=>{
+            video.srcObject = remoteStream;
+            video.play();
+          });
+          this.llamada.on('close',()=>{
+            this.inCall = false;
+            this.video.nativeElement.srcObject = null;
+            this.video.nativeElement.pause();
+          })        
       })
+    }else{
+      Swal.fire('El cliente aún no se encuentra conectado');
+    }
   }
 
   async colgar(){
@@ -170,12 +193,22 @@ export class CallComponent implements OnInit {
       this.inCall = false;
       this.video.nativeElement.pause();
     }
+
+    const audioCtx = new AudioContext();
+    console.log(this.localStream);
+    const dest =audioCtx.createMediaStreamDestination();
+
+    let localsource = audioCtx.createMediaStreamSource(this.localStream);
+    let remoteSource = audioCtx.createMediaStreamSource(this.remoteStream);
+    localsource.connect(dest);
+    remoteSource.connect(dest);
+    console.log(dest.stream.getTracks()[0])
   }
 
   @HostListener('window:beforeunload', ['$event'])
   onWindowClose(event: BeforeUnloadEvent):void {
     event.returnValue = true;
-    this.cierreVentana.emit()
+    this.cierreVentana.emit();
   }
 
   async confirm():Promise<boolean>{

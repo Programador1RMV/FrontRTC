@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, AfterViewChecked, AfterViewInit } from '@angular/core';
 import { Teleconsulta } from '../servicios/entities';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MedicoService } from 'src/app/services/medico.service';
@@ -13,7 +13,7 @@ import * as moment from 'moment';
 })
 
 
-export class FormularioComponent implements OnInit {
+export class FormularioComponent implements OnInit{
   @Input()
   teleconsulta?:Teleconsulta;
   public diagnosticos:Array<Diagnostico>;
@@ -27,10 +27,16 @@ export class FormularioComponent implements OnInit {
     this.cie10 = false;
     this.tiempoTranscurrido = '';
     this.finConsulta = new EventEmitter<string>();
+    this.formulario = this.newForm();
   }
   ngOnInit(): void {
     this.teleconsulta = new Teleconsulta();
     this.formulario = this.newForm();
+    this.onChanges();
+  }
+  
+  async onChanges(){
+    await this._medico.saveTeleconsulta(this.formulario.value).toPromise();
   }
 
   newForm({antecedentes,nConsulta,nOperador,consecutivo,cedulaCliente}={antecedentes:null,nConsulta:null,nOperador:null,consecutivo:null,cedulaCliente:null}):FormGroup{
@@ -45,7 +51,8 @@ export class FormularioComponent implements OnInit {
       diagnostico:new FormControl(null),
       mensajes:new FormControl(null),
       cedulaCliente:new FormControl(cedulaCliente),
-      horaInicio:new FormControl(null)
+      horaInicio:new FormControl(null),
+      novedades:new FormControl(null),
     })
   }
   setNotas(antecedentes,nConsulta,nOperador,consecutivo,cedulaCliente){
@@ -68,14 +75,15 @@ export class FormularioComponent implements OnInit {
     let value = this.formulario.value;
     if(value.consecutivo === undefined || value.consecutivo === null){
       Swal.fire('Error','debes de tener una teleconsulta activa para poder finalizarla','error');
-      clearInterval(this.contador);
       return;
     }
     
     this._medico.saveTeleconsulta(this.formulario.value).subscribe(resp=>{
+      this.formulario = this.newForm();
+      this._medico.finTeleconsulta(this.formulario.value.consecutivo).subscribe(succ=>succ);
       this.finConsulta.emit();
+      clearInterval(this.contador);
     });
-    this.formulario = this.newForm();
     
   }
 

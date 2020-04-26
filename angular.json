@@ -134,6 +134,14 @@
           "configurations": {
             "production": {
               "browserTarget": "VideoChat:build:production"
+            },
+            "rmv": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.rmv.ts"
+                }
+              ]
             }
           }
         },

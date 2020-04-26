@@ -31,4 +31,8 @@ export class MedicoService {
   updateBencel(consecutivo,telefono){
     return this._http.put(`${environment.apiUri}/medicos/servicio/${consecutivo}/bentel`,{telefono});
   }
+
+  finTeleconsulta(csc){
+    return this._http.get(`${environment.apiUri}/medicos/finservicio/${csc}`);
+  }
 }
