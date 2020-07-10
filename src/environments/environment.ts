@@ -4,12 +4,13 @@
 
 export const environment = {
   production: false,
-  apiUri:`https://localhost:3000`,
+  apiUri:`https://192.168.0.2:3000`,
   backSecure:true,
+  phpBack:'https://apphost.redmedicavital.com/teleconsulta/',
   peerConf:{
     ip:'190.128.118.236',
     path:'/myapp',
-    secure:false
+    secure:true
   }
 
 

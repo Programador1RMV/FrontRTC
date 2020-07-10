@@ -5,10 +5,14 @@
             grid-template-areas: "video  video  video  video"
             "me     me     me     me"
             "button button button button"
-            "buton  buton  buton  buton" !important;   
+            "buton  buton  buton  buton" 
+            "chat chat chat chat"  !important;   
         }
         .finalizar-consulta{
             display: none !important;
+        }
+        .inputs{
+            grid-area: chat;            
         }
     }
     
@@ -18,6 +22,7 @@
         display:grid;
         grid-template-areas: "video me"
                    "video me"
+                   "chat chat"
                    "fin   fin" !important;
         margin:auto;
         height:auto;
@@ -70,4 +75,15 @@
             display: none !important;
         }
     }
+    .inputs{
+        grid-area: chat;            
+    }
+}
+
+.enviar{
+    z-index: 0;
+}
+
+textarea{
+    width: 100%;
 }

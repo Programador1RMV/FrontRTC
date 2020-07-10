@@ -46,6 +46,16 @@
               <option value="Problema de conexión">Problema de conexión</option>
             </select>
           </label> <br>
+          <div class="row">
+            <label class="col-md-5">
+              Celular
+              <input type="number" formControlName="bencel" class="form-control">
+            </label>
+            <label class="col-md-5">
+              Telefono
+              <input type="number" formControlName="bentel" class="form-control">
+            </label>
+          </div>
           <label for="cie10">CIE10: <button id="cie10" class="btn btn-info" (click)="cie10 = !cie10">Cie10</button> <i *ngIf="formulario.controls['diagnostico'].value" class="fas fa-check ml-1 text-success"></i> {{ formulario.controls['diagnostico'].value }} </label>
         </div>
         <div class="col-6 ml-auto">

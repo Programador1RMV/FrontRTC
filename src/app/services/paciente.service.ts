@@ -26,4 +26,8 @@ export class PacienteService {
 
     return this.__http.post(`${environment.apiUri}/paciente/guardarEncuesta`,{csc,...body});
   }
+
+  totalServicios<T>(bendoc):Observable<T>{
+    return this.__http.get<T | any>(`${environment.apiUri}/vital/totalconsultas/${bendoc}`);
+  }
 }

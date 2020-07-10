@@ -1,0 +1,38 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">Total Servicios {{bendoc}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <table  datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover table-bordered" style="width: 100%;">
+        <thead>
+          <tr>
+            <th class="all">N° HISTORIA</th>
+            <th class="all">FECHA</th>
+            <th class="all">HORA</th>
+            <th class="all">HORA LL</th>
+            <th class="all">MEDICO</th>
+            <th class="all">MOTIVO</th>
+            <th class="none">DIAGNOSTICO</th>
+            <th class="none">AUXILIAR</th>
+            <th class="none">CONDUCTOR</th>
+            <th class="none">TIPO SERVICIO</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let datos of tableOpt; let i=index">
+              <td>{{ datos.reqcsc }}</td>
+              <td>{{ datos.reqdia | date: 'MM/dd/yyyy' }}</td>
+              <td>{{ datos.reqhor }}</td>
+              <td>{{ datos.reqhll }}</td>
+              <td>{{ datos.medico }}</td>
+              <td>{{ datos.reqsig }}</td>
+              <td>{{ datos.diagnostico }}</td>
+              <td>{{ datos.enfermero }}</td>
+              <td>{{ datos.conductor }}</td>
+              <td>{{ datos.tpsnom  }}</td>
+            </tr>
+        </tbody>
+      </table>
+</div>

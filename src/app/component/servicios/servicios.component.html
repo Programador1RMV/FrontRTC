@@ -15,7 +15,7 @@
   <tr *ngFor="let service of teleconsultas">
     <td>{{service.consecutivo}}</td>
     <td>{{service.horaLlamada}}</td>
-    <td>{{service.nombre}}</td>
+    <td (click)="abrirModal(modalHistorialHistoriaClinica,service.cedula)">{{service.nombre}}</td>
     <td>{{service.cedula}}</td>
     <td>{{service.bencel}}</td>
     <td>{{service.signosSintomas}}</td>
@@ -34,3 +34,6 @@
   </tr>
   </tbody>
 </table>
+<ng-template #modalHistorialHistoriaClinica>
+  <app-historial-historias-clinicas [bendoc]="modalBendoc" [modalRef]="modalRef"></app-historial-historias-clinicas>
+</ng-template>

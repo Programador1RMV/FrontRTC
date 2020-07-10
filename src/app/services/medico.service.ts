@@ -9,7 +9,7 @@ import { Socket } from 'ngx-socket-io';
   providedIn: 'root'
 })
 export class MedicoService {
-  
+  public photosUrl= environment.phpBack;
   constructor(private _http:HttpClient, private socket:Socket) {}
 
   public teleconsultas():Observable<Array<Teleconsulta>>{
@@ -34,5 +34,49 @@ export class MedicoService {
 
   finTeleconsulta(csc){
     return this._http.get(`${environment.apiUri}/medicos/finservicio/${csc}`);
+  }
+
+  async savePhotos(imagenes:Array<any>,consecutivo,cedulaPaciente){
+    return new Promise(async (resolve,reject)=>{
+
+      //Por cada imagen descargarla en formato png y enviarlar al servior
+      //Si hay un error dispararlo 
+      //Se usa una promesa para poder esperar a que se suban todas las imagenes para terminar el servicio
+      try{
+        for(let index=0;index<imagenes.length;index++){
+          let imagen = imagenes[index];
+          let form = new FormData();
+          let img = await fetch(imagen);
+          let finalImg = await img.blob();
+          form.append("file",finalImg);
+          form.append("consecutivo",consecutivo);
+          form.append("cedulaPaciente",cedulaPaciente);
+          form.append("pos",`${index}`);
+          await this._http.post(`${this.photosUrl}`,form).toPromise();
+        }
+        resolve();
+      }catch(e){
+        reject(e);
+      }
+    })
+  }
+
+  async saveAudio(audio,consecutivo,cedulaPaciente){
+    return new Promise(async (resolve,reject)=>{
+      //Enviamos el blob de el audio a el servidor para guardarlos
+      try{
+        let form = new FormData();
+        let aud = await fetch(URL.createObjectURL(audio));
+        let final = await aud.blob();
+        form.append("file",final);
+        console.log(final);
+        
+        form.append("consecutivo",consecutivo);
+        form.append("cedulaPaciente",cedulaPaciente);
+        await this._http.post(`${this.photosUrl}?video=true`,form).toPromise();
+      }catch(e){
+
+      }
+    })
   }
 }

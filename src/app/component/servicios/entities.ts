@@ -10,4 +10,5 @@ export class Teleconsulta{
     nOperador:string;
     teleconsultaActiva:boolean;
     bencel:string;
+    bentel:string;
 }

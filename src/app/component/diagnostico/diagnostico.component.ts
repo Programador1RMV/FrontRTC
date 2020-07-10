@@ -30,7 +30,6 @@ export class DiagnosticoComponent implements OnInit {
 
   buscar(event?){
     this.page = 0;
-    console.log('buscar');
     this._medico.diagnosticos(this.busqueda).subscribe(diags => this.diagnosticos = diags);
   }
 

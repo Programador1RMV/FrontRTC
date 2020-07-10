@@ -10,7 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CallComponent } from './component/call/call.component';
 import { HttpClientModule } from '@angular/common/http'
 import { AuthService } from './services/auth.service';
-import { NgbNavModule, NgbTabsetModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbNavModule, NgbTabsetModule, NgbTooltipModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { MedicoComponent } from './component/medico/medico.component';
 import { ServiciosComponent } from './component/servicios/servicios.component';
 import { FormularioComponent } from './component/formulario/formulario.component';
@@ -22,6 +22,11 @@ import { DiagnosticoComponent } from './component/diagnostico/diagnostico.compon
 import { SocketIoModule, Socket } from 'ngx-socket-io';
 import { WrappedSocket } from 'ngx-socket-io/src/socket-io.service';
 import { environment } from 'src/environments/environment';
+import { PhotosComponent } from './component/photos/photos.component';
+import { ThanksComponent } from './component/thanks/thanks.component';
+import { HistorialHistoriasClinicasComponent } from './component/historial-historias-clinicas/historial-historias-clinicas.component';
+import { BsModalService, ModalModule } from 'ngx-bootstrap/modal';
+import { DataTablesModule } from 'angular-datatables';
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,7 +37,10 @@ import { environment } from 'src/environments/environment';
     PacienteComponent,
     FormularioPacienteComponent,
     EncuestaComponent,
-    DiagnosticoComponent
+    DiagnosticoComponent,
+    PhotosComponent,
+    ThanksComponent,
+    HistorialHistoriasClinicasComponent
   ],
   imports: [
     BrowserModule,
@@ -48,13 +56,16 @@ import { environment } from 'src/environments/environment';
     NgbTooltipModule,
     RecaptchaModule,
     RecaptchaFormsModule,
+    ModalModule.forRoot(),
+    DataTablesModule,
     SocketIoModule.forRoot({
       url:`${environment.backSecure? 'https':'http'}://${environment.peerConf.ip}:3000/chat`,
       options:{}
     })
   ],
   providers: [
-    AuthService
+    AuthService,
+    BsModalService
   ],
   bootstrap: [AppComponent]
 })

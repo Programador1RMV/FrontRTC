@@ -27,7 +27,6 @@ export class MedicoComponent implements OnInit,AfterViewInit {
     this.medico = JSON.parse(localStorage.getItem("user")).name;
   }
   ngAfterViewInit(): void {
-    console.log(this.formulario.teleconsulta);
   }
 
   ngOnInit(): void {
@@ -36,11 +35,10 @@ export class MedicoComponent implements OnInit,AfterViewInit {
   cambioPestanaYSeleccionarTeleconsulta($event:Teleconsulta):void{
     this.currentTab = 2;
     this.teleconsultaSeleccionada = $event;
-    let {antecedentes,nConsulta,nOperador,consecutivo,cedula} = $event;
-    this.formulario.setNotas(antecedentes,nConsulta,nOperador,consecutivo,cedula);
+    let {antecedentes,nConsulta,nOperador,consecutivo,cedula,bencel,bentel} = $event;
+    this.formulario.setNotas(antecedentes,nConsulta,nOperador,consecutivo,cedula,bencel,bentel);
   }
-  finServicio(){
-    console.log('fin');
+  async finServicio(){
     this.servicios.finalizarServicio(this.teleconsultaSeleccionada);
     this.teleconsultaSeleccionada = new Teleconsulta();
     this.llamada.colgar();
@@ -54,10 +52,14 @@ export class MedicoComponent implements OnInit,AfterViewInit {
   async enviarMensjaePaciente(){
     let {value,dismiss}= await Swal.fire({
       input:'tel',
+      inputValue:this.teleconsultaSeleccionada.bencel,
       text:'Ingrese el número al que desea enviar notificación',
       title:'Número de notificación',
       showCancelButton:false
     });
+    if(dismiss){
+      return;
+    }
     if(!dismiss){
       let {value:valor, dismiss:cerrado } = await Swal.fire({
         title:'Enviar enlace',
@@ -68,7 +70,7 @@ export class MedicoComponent implements OnInit,AfterViewInit {
       if(cerrado){
         return;
       }
-      await this.__medico.updateBencel(this.teleconsultaSeleccionada.consecutivo,value).toPromise();
+      const result = await this.__medico.updateBencel(this.teleconsultaSeleccionada.consecutivo,value).toPromise();
       this.teleconsultaSeleccionada.bencel = value;
     }
     this.__medico.sendSMS(this.teleconsultaSeleccionada.consecutivo,this.teleconsultaSeleccionada.bencel).subscribe(succ=>{
@@ -91,11 +93,48 @@ export class MedicoComponent implements OnInit,AfterViewInit {
   }
 
   markAsConnected(csc){
+    if(this.teleconsultaSeleccionada !== undefined){
+      if(this.teleconsultaSeleccionada.consecutivo == csc){
+        this.teleconsultaSeleccionada.teleconsultaActiva = true;
+      }
+    }
+
     for(let i=0;i<this.servicios.teleconsultas.length;i++){
-      let teleconsulta = this.servicios.teleconsultas[i]
-      if(teleconsulta.consecutivo === csc){
+      let teleconsulta = this.servicios.teleconsultas[i];
+      if(teleconsulta.consecutivo == csc){
         this.servicios.teleconsultas[i].teleconsultaActiva = true;
       }
     }
+  }
+
+  addImagen($event){
+    this.formulario.imagenes.push($event);
+  }
+
+  get photos(){
+    return this.formulario === undefined ? [] : this.formulario.imagenes;
+  }
+
+  async colgar($event){
+    let {value,dismiss} = await Swal.fire({
+      icon:'question',
+      title:'Seguro desea salir?',
+      text:'Si sale de esta conferencia se finalizará su consulta',
+      showCancelButton:true
+    });
+    
+    if(value){
+      this.__medico.saveAudio($event,this.teleconsultaSeleccionada.consecutivo,this.teleconsultaSeleccionada.cedula);
+      this.llamada.colgar();
+    }
+  }
+
+  setPausedCall(){
+    
+  }
+
+  async saveAudio($event:{csc:string,cedula:string}){
+    
+    this.__medico.saveAudio(await this.llamada.getAudio(),$event.csc,$event.cedula);
   }
 }

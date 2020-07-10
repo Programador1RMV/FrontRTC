@@ -1,6 +1,6 @@
 <div class="container">
     <span class="float-left bg-primary  text-white font-weight-bold w-100 p-5 text-right">{{paciente.nombre}} : {{ paciente.documento_ap }} {{ paciente.cedula}}</span>
-    <app-call (cierreVentana)="marcarEncuestaComoNoContestada()"  (colgado)="llamadaFinalizada()" class="paciente"></app-call>
+    <app-call *ngIf="consecutivo" [consecutivo]="consecutivo" (cierreVentana)="marcarEncuestaComoNoContestada()"  (finLlamadaPaciente)="llamadaFinalizada()" (colgado)="colgar()" class="paciente"></app-call>
 </div>
 <div class="sala-de-espera" [ngClass]="{'hidden':inCall}">
     <h2 class="h1 alert alert-primary" role="alert">

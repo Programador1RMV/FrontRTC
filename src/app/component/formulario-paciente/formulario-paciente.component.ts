@@ -23,7 +23,7 @@ export class FormularioPacienteComponent implements OnInit {
   newForm():FormGroup{
     return new FormGroup({
       radicado:new FormControl('',[Validators.required,Validators.pattern(/^\d+$/)]),
-      terms:new FormControl('',[Validators.requiredTrue]),
+      terms:new FormControl(false),
       captcha:new FormControl('',[Validators.required])
     })
   }
@@ -31,6 +31,18 @@ export class FormularioPacienteComponent implements OnInit {
   onSubmit(event:Event):void{
     event.preventDefault();
     this.loading = true;
+    const terminos = this.form.get('terms').value;
+    console.log(terminos);
+    if(terminos === false){
+      Swal.fire({
+        timer:2000,
+        icon:'warning',
+        title:'Terminos y condiciones',
+        text:'Debes aceptar los terminos y condiciones para poder continuar',
+        showConfirmButton:false
+      })
+      return;
+    }
     this._paciente.medicOfPatience(this.form.value.radicado).subscribe(succ=>{
       if(!succ){
         Swal.fire({
@@ -47,6 +59,5 @@ export class FormularioPacienteComponent implements OnInit {
   }
 
   noEsRobot(event){
-    console.log(event);
   }
 }

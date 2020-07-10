@@ -5,15 +5,22 @@
       <a ngbNavLink>Teleconsultas</a>
     </li>
     <li [ngbNavItem]="2">
-      <a ngbNavLink>Llamadas</a>
+      <a ngbNavLink>Llamadas <span class="badge badge-primary" *ngIf="teleconsultaSeleccionada?.teleconsultaActiva && currentTab != 2">Activa</span></a>
     </li>
-    <li [ngbNavItem] [disabled]="true" class="float-left">
+    <li [ngbNavItem]="3">
+      <a ngbNavLink>Fotos tomadas</a>
     </li>
   </ul>
   <div width="100%">
-    <app-call (sendSMS)="enviarMensjaePaciente()" (markAsConnected)="markAsConnected($event)" (newMessage)="setMessage($event)" class="medico" (inicioLlamada)="setStartHour()" [ngClass]="{'hidden':currentTab != 2}"></app-call>
-    <app-formulario class="float-right mt-2" (finConsulta)="finServicio()" [teleconsulta]="teleconsultaSeleccionada" [ngClass]="{'hidden':currentTab != 2}"></app-formulario>
+    <div *ngIf="teleconsultaSeleccionada && currentTab === 2 ">
+      <p>Número de conssulta: {{teleconsultaSeleccionada.consecutivo}}</p>
+      <p>{{teleconsultaSeleccionada.nombre}}  {{teleconsultaSeleccionada.bencel}}</p>
+      <p>{{ teleconsultaSeleccionada.teleconsultaActiva ? 'En sala' : 'Esperando' }}</p>
+    </div>
+    <app-call (finLlamadaMedico)="setPausedCall()" (colgado)="colgar($event)" (addImage)="addImagen($event)" (sendSMS)="enviarMensjaePaciente()" (markAsConnected)="markAsConnected($event)" (newMessage)="setMessage($event)" class="medico" (inicioLlamada)="setStartHour()" [ngClass]="{'hidden':currentTab != 2}"></app-call>
+    <app-formulario (saveAudio)="saveAudio($event)" [audioLlamada]="llamada?.audio " class="float-right mt-2" (finConsulta)="finServicio()" [teleconsulta]="teleconsultaSeleccionada" [ngClass]="{'hidden':currentTab != 2}"></app-formulario>
   </div>
   <app-servicios [teleconsulta]="teleconsultaSeleccionada" (teleconsultaSeleccionada)="cambioPestanaYSeleccionarTeleconsulta($event)" [ngClass]="{'hidden':currentTab !=1}"></app-servicios>
+  <app-photos [ngClass]="{'hidden':currentTab != 3}" [photos]="photos"></app-photos>
 </div>
 <button ngbTooltip="Cerrar sesión"  class="close" (click)="cerrarSesion()">X</button>

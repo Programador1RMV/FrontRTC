@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
 import Swal, { SweetAlertResult } from 'sweetalert2';
 import { PacienteService } from 'src/app/services/paciente.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-encuesta',
@@ -21,7 +21,7 @@ export class EncuestaComponent implements OnInit {
     {value:4,tooltip: '🙂'},
     {value:5,tooltip: '😁'},
   ]
-  constructor(private __paciente:PacienteService, private __route:ActivatedRoute) { 
+  constructor(private __paciente:PacienteService, private __route:ActivatedRoute,private router:Router) { 
     this.preguntas = [{pregunta:'Qué valoración le da al operador?',valoracion:0,campo:'calConsultaOpe'},{pregunta:'Qué valoración le da al auxiliar?',valoracion:0,campo:'calConsultaAux'},{pregunta:'Qué valoración le da al médico?',valoracion:0,campo:'calConsultaMed'}];
     this.form = new FormGroup({
       encargado:new FormControl(null),
@@ -37,7 +37,6 @@ export class EncuestaComponent implements OnInit {
 
   async ngOnInit(){
     await this.modalResponsable();
-    console.log(this.responsable.value);
   }
 
   createFormArray(){
@@ -67,8 +66,13 @@ export class EncuestaComponent implements OnInit {
       input:'select',
       inputOptions,
       showCancelButton:true,
-      cancelButtonText:'No deseo hacer la encuesta'
+      cancelButtonText:'No deseo hacer la encuesta',
+      backdrop:false
     });
+    if(this.responsable.dismiss){
+      this.router.navigate(['/thanks']);
+      return;
+    }
     this.form.get('encargado').setValue(this.responsable.value);
   }
 
@@ -78,13 +82,17 @@ export class EncuestaComponent implements OnInit {
 
   saveEncuesta(){
     this.__paciente.saveEncuesta(this.csc,this.form.value).subscribe(succ=>{
-      Swal.fire({
-        title:'Listo!',
-        text:'Gracias por su tiempo',
-        icon:'success',
-        timer:1500,
-        showConfirmButton:false
-      })
+      this.router.navigate(['/thanks']);
     });
+  }
+
+  showGrats():Promise<SweetAlertResult>{
+    return Swal.fire({
+      title:'Listo!',
+      text:'Gracias por su tiempo',
+      icon:'success',
+      showConfirmButton:false,
+      width:'100vw'
+    })
   }
 }

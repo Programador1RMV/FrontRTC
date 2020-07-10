@@ -1,6 +1,8 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, TemplateRef } from '@angular/core';
 import { Teleconsulta } from './entities';
 import { MedicoService } from 'src/app/services/medico.service';
+import { HistorialHistoriasClinicasComponent } from '../historial-historias-clinicas/historial-historias-clinicas.component';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-servicios',
@@ -11,8 +13,12 @@ export class ServiciosComponent implements OnInit {
   public teleconsultas:Array<Teleconsulta>;
   @Output() public teleconsultaSeleccionada:EventEmitter<Teleconsulta>;
   @Input() public teleconsulta:Teleconsulta;
-  constructor(private _medicos:MedicoService) { 
+  public modalBendoc:string;
+  public modalRef:BsModalRef;
+  constructor(private _medicos:MedicoService, private _modalS:BsModalService) { 
     this.teleconsultas = [];
+    this.modalBendoc = "";
+
     this.teleconsultaSeleccionada = new EventEmitter<Teleconsulta>();
   }
   
@@ -28,9 +34,7 @@ export class ServiciosComponent implements OnInit {
 
   finalizarServicio(teleconsulta:Teleconsulta){
     for(let [index,value] of this.teleconsultas.entries()){
-      console.log(value,teleconsulta,value===teleconsulta);
       if(value === teleconsulta){
-        console.log(this.teleconsultas.splice(index,1));
       }
     }
   }
@@ -38,6 +42,14 @@ export class ServiciosComponent implements OnInit {
   loadServices(){
     this._medicos.teleconsultas().subscribe(teleconsultas=>{
       this.teleconsultas = teleconsultas;
+    });
+  }
+
+  abrirModal(ref:TemplateRef<any>,bendoc){
+    this.modalBendoc = bendoc;
+    this.modalRef = this._modalS.show(ref,{
+      animated:true,
+      class:'modal-lg'
     });
   }
 }
