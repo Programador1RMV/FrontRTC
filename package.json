@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "sslStart":"ng serve --ssl --ssl-key C:\\xampp\\apache\\conf\\ssl.key\\servidor.key --ssl-cert C:\\xampp\\apache\\conf\\ssl.crt\\servidor.crt --host=0.0.0.0 ",
+    "sslStart": "ng serve --ssl --ssl-key C:\\xampp\\apache\\conf\\ssl.key\\servidor.key --ssl-cert C:\\xampp\\apache\\conf\\ssl.crt\\servidor.crt --host=0.0.0.0 ",
     "build": "ng build --base-href=",
     "test": "ng test",
     "lint": "ng lint",
